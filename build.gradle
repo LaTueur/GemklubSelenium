@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.31.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.12.1' 
+    implementation 'com.mailslurp:mailslurp-client:15.19.22'
+}
+
+test {
+    useJUnitPlatform()
+}
