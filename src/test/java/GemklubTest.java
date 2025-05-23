@@ -10,26 +10,35 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class GemklubTest {
-    public WebDriver driver;
-    public Config config;
-    
+    private WebDriver driver;
+    private Config config;
+    private MainPage mainPage;
+
     @BeforeEach
     public void setup()  throws MalformedURLException  {
-        ChromeOptions options = new ChromeOptions();
-        driver = new RemoteWebDriver(new URL("http://selenium:4444/wd/hub"), options);
+        driver = new ChromeDriver();
         driver.manage().window().maximize();
         config = new Config();
-    }
-    
-    @Test
-    public void testLoginFromMainPage() {
-        MainPage mainPage = new MainPage(driver);
+
+        mainPage = new MainPage(driver);
         mainPage.navigateTo();
+
+        Cookie cookie1 = new Cookie("auroraMarketingCookieAccepted", "1");
+        Cookie cookie2 = new Cookie("auroraNanobarAccepted", "1");
+        driver.manage().addCookie(cookie1);
+        driver.manage().addCookie(cookie2);
+
+        driver.navigate().refresh();
+    }
+
+    @Test
+    public void testLoginFromMainPage(){
         LoginPage loginPage = mainPage.navigateToLogin();
 
-        loginPage.fillCredentialAndLogIn(config.getEmail(), config.getPassword());
+        ProfilePage profilePage = loginPage.fillCredentialAndLogIn(config.getEmail(), config.getPassword());
 
-        assertTrue(loginPage.getBodyText().contains("Fiókom"));
+        profilePage.waitMatchingTitle();
+        assertEquals("Fiókom", profilePage.getMainHeaderText());
     }
 
     @Test
@@ -37,9 +46,12 @@ public class GemklubTest {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.navigateTo();
 
-        loginPage.fillCredentialAndLogIn(config.getEmail(), config.getPassword());
+        ProfilePage profilePage = loginPage.fillCredentialAndLogIn(config.getEmail(), config.getPassword());
 
-        loginPage.logOut();
+        profilePage.waitMatchingTitle();
+
+        profilePage.logOut();
+        loginPage.waitMatchingTitle();
     }
 
     @Test
@@ -49,7 +61,7 @@ public class GemklubTest {
 
         loginPage.randomLogIn(config.getEmail());
 
-        assertTrue(loginPage.getBodyText().contains("Hibás felhasználónév és/vagy jelszó."));
+        assertEquals("Hibás felhasználónév és/vagy jelszó.", loginPage.getAlert());
     }
 
     @Test
@@ -59,7 +71,7 @@ public class GemklubTest {
 
         loginPage.randomLogIn();
 
-        assertTrue(loginPage.getBodyText().contains("Hibás felhasználónév és/vagy jelszó."));
+        assertEquals("Hibás felhasználónév és/vagy jelszó.", loginPage.getAlert());
     }
 
     @ParameterizedTest

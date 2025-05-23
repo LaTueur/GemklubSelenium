@@ -7,11 +7,19 @@ repositories {
 }
 
 dependencies {
+	testImplementation(platform('org.junit:junit-bom:5.11.4'))
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine'
+
     testImplementation 'org.seleniumhq.selenium:selenium-java:4.31.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.12.1' 
     implementation group: 'com.mailslurp', name: 'mailslurp-client-java', version: '15.19.22'
 }
 
 test {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        includeEngines 'junit-jupiter'
+    }
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
 }

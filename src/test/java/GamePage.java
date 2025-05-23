@@ -24,6 +24,6 @@ class GamePage extends GemklubBase {
     }
 
     private By nthCustomerInfo(int n){
-        return By.xpath("//div[class='custom-parameter-icon-wrapper']/td[position()=" + n + "]/span");
+        return By.xpath("//div[@class='custom-parameter-icon-wrapper']/td[" + n + "]/span");
     }
 }

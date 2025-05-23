@@ -4,13 +4,14 @@ class LoginPage extends GemklubBase {
     private By emailBy = By.xpath("//input[@id='email_login']");
     private By passwordBy = By.xpath("//input[@id='password_login']");
     private By loginButtonBy = By.xpath("//div[@class='form-group']/button");
+    private By alertBy = By.xpath("//div[@class='alert alert-danger']");
     private RandomGenerator randomGenerator = new RandomGenerator();
 
     public LoginPage(WebDriver driver) {
         super(driver, "customer/login");
     }
 
-    public void fillCredentialAndLogIn(String email, String password) {
+    public ProfilePage fillCredentialAndLogIn(String email, String password) {
         WebElement emailElement = waitAndReturnElement(emailBy);
         emailElement.sendKeys(email);
 
@@ -19,6 +20,8 @@ class LoginPage extends GemklubBase {
 
         WebElement buttonElement = waitAndReturnElement(loginButtonBy);
         buttonElement.click();
+
+        return new ProfilePage(driver);
     }
 
     public void randomLogIn() {
@@ -27,5 +30,9 @@ class LoginPage extends GemklubBase {
 
     public void randomLogIn(String email) {
         fillCredentialAndLogIn(email, randomGenerator.randomPassword());
+    }
+
+    public String getAlert() {
+        return waitAndReturnElement(alertBy).getText();
     }
 }

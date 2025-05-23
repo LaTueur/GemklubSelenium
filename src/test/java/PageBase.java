@@ -18,16 +18,15 @@ class PageBase {
 
     public void navigateTo() {
         driver.get(url);
+        waitMatchingTitle();
+    }
+
+    public void waitMatchingTitle() {
         wait.until(ExpectedConditions.titleContains(title));
     }
     
     protected WebElement waitAndReturnElement(By locator) {
         this.wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         return this.driver.findElement(locator);
-    } 
-    
-    public String getBodyText() {
-        WebElement bodyElement = this.waitAndReturnElement(By.tagName("body"));
-        return bodyElement.getText();
     }
 }
