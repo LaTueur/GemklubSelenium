@@ -12,7 +12,7 @@ class MailManager {
         client.setApiKey(apiKey);
 
         InboxControllerApi inboxApi = new InboxControllerApi(client);
-        inbox = inboxApi.createInbox(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        inbox = inboxApi.createInboxWithDefaults();
 
         waitApi = new WaitForControllerApi(client);
     }

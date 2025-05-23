@@ -18,11 +18,17 @@ class PageBase {
 
     public void navigateTo() {
         driver.get(url);
-        waitMatchingTitle();
+        waitOnPage();
     }
 
-    public void waitMatchingTitle() {
+    public void waitOnPage() {
+        wait.until(ExpectedConditions.urlToBe(url));
         wait.until(ExpectedConditions.titleContains(title));
+    }
+    
+    public String getBodyText() {
+        WebElement bodyElement = this.waitAndReturnElement(By.tagName("body"));
+        return bodyElement.getText();
     }
     
     protected WebElement waitAndReturnElement(By locator) {

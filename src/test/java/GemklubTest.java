@@ -1,10 +1,13 @@
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.*;
 import org.openqa.selenium.remote.*;
-import static org.junit.jupiter.api.Assertions.*;
+
+import com.mailslurp.clients.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -37,7 +40,7 @@ public class GemklubTest {
 
         ProfilePage profilePage = loginPage.fillCredentialAndLogIn(config.getEmail(), config.getPassword());
 
-        profilePage.waitMatchingTitle();
+        profilePage.waitOnPage();
         assertEquals("Fiókom", profilePage.getMainHeaderText());
     }
 
@@ -48,10 +51,10 @@ public class GemklubTest {
 
         ProfilePage profilePage = loginPage.fillCredentialAndLogIn(config.getEmail(), config.getPassword());
 
-        profilePage.waitMatchingTitle();
+        profilePage.waitOnPage();
 
         profilePage.logOut();
-        loginPage.waitMatchingTitle();
+        loginPage.waitOnPage();
     }
 
     @Test
@@ -74,6 +77,21 @@ public class GemklubTest {
         assertEquals("Hibás felhasználónév és/vagy jelszó.", loginPage.getAlert());
     }
 
+    @Test
+    public void testRegistration() throws ApiException {
+        RegistrationPage regPage = new RegistrationPage(driver);
+        regPage.navigateTo();
+
+        MailManager mailManager = new MailManager(config.getApiKey());
+
+        SuccessPage succPage = regPage.fillCredentialAndRegister(mailManager.getEmailAddress(), "VerySecretPassword", "Csiga", "Biga", "06705555555");
+        
+        succPage.waitOnPage();
+        assertTrue(succPage.getBodyText().contains("Sikeres regisztráció"));
+
+        assertEquals("Jó, hogy itt vagy!", mailManager.lastestEmailSubject());
+    }
+
     @ParameterizedTest
     @CsvSource({
         "kontroll-13011, Kontroll, 2 fő, 20-25 perc, 14+",
@@ -89,6 +107,7 @@ public class GemklubTest {
         assertEquals(gamePage.getAgeCategory(), ageCategory);
         assertEquals(gamePage.getGameTime(), gameTime);
     }
+    
     
     @AfterEach
     public void close() {
