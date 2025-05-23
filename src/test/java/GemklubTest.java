@@ -35,6 +35,7 @@ public class GemklubTest {
     }
 
     @Test
+    @DisplayName("User can navigate to the login page and login.")
     public void testLoginFromMainPage(){
         LoginPage loginPage = mainPage.navigateToLogin();
 
@@ -45,6 +46,7 @@ public class GemklubTest {
     }
 
     @Test
+    @DisplayName("User can login and logout.")
     public void testLogout() {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.navigateTo();
@@ -58,6 +60,7 @@ public class GemklubTest {
     }
 
     @Test
+    @DisplayName("User is notified when using wrong password.")
     public void testLoginWrongPassword() {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.navigateTo();
@@ -68,6 +71,7 @@ public class GemklubTest {
     }
 
     @Test
+    @DisplayName("User is notified when using wrong email and password.")
     public void testLoginWrongCredentials() {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.navigateTo();
@@ -78,6 +82,7 @@ public class GemklubTest {
     }
 
     @Test
+    @DisplayName("User can register and get an email notification about it.")
     public void testRegistration() throws ApiException {
         RegistrationPage regPage = new RegistrationPage(driver);
         regPage.navigateTo();
@@ -98,6 +103,7 @@ public class GemklubTest {
         "aranyfolyo-12974, Aranyfolyó, 2-4 fő, 60-90 perc, 14+",
         "concept-85, Concept, 4-12 fő, 40 perc, 10+"
     })
+    @DisplayName("User can view games and the correct info is displayed.")
     public void testGamePageData(String gameId, String productName, String playerCount, String gameTime, String ageCategory){
         GamePage gamePage = new GamePage(driver, gameId, productName);
         gamePage.navigateTo();
