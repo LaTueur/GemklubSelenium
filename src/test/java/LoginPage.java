@@ -11,13 +11,13 @@ class LoginPage extends GemklubBase {
     }
 
     public void fillCredentialAndLogIn(String email, String password) {
-        WebElement emailElement = waitVisibiltyAndFindElement(emailBy);
+        WebElement emailElement = waitAndReturnElement(emailBy);
         emailElement.sendKeys(email);
 
-        WebElement passwordElement = waitVisibiltyAndFindElement(passwordBy);
+        WebElement passwordElement = waitAndReturnElement(passwordBy);
         passwordElement.sendKeys(password);
 
-        WebElement buttonElement = waitVisibiltyAndFindElement(loginButtonBy);
+        WebElement buttonElement = waitAndReturnElement(loginButtonBy);
         buttonElement.click();
     }
 

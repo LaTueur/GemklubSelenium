@@ -12,15 +12,15 @@ class GamePage extends GemklubBase {
     }
 
     public String getPlayerCount(){
-        return nthCustomerInfo(1).getText();
+        return waitAndReturnElement(nthCustomerInfo(1)).getText();
     }
 
     public String getGameTime(){
-        return nthCustomerInfo(2).getText();
+        return waitAndReturnElement(nthCustomerInfo(2)).getText();
     }
 
     public String getAgeCategory(){
-        return nthCustomerInfo(3).getText();
+        return waitAndReturnElement(nthCustomerInfo(3)).getText();
     }
 
     private By nthCustomerInfo(int n){

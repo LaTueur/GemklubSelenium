@@ -1,4 +1,5 @@
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.*;
 
 class GemklubBase extends PageBase {
     private By loginNavigationBy = By.xpath("//a[@title='Belépés']");
@@ -18,7 +19,10 @@ class GemklubBase extends PageBase {
     }
 
     public void logOut(){
-        waitAndReturnElement(profileBy).moveToElement();
+        WebElement profile = waitAndReturnElement(profileBy);
+        new Actions(driver)
+            .moveToElement(profile)
+            .perform();
         waitAndReturnElement(logoutBy).click();
     }
 }

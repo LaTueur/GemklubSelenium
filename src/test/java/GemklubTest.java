@@ -2,6 +2,9 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.*;
+import org.openqa.selenium.remote.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -26,7 +29,7 @@ public class GemklubTest {
 
         loginPage.fillCredentialAndLogIn(config.getEmail(), config.getPassword());
 
-        Assert.assertTrue(loginPage.getBodyText().contains("Fiókom"));
+        assertTrue(loginPage.getBodyText().contains("Fiókom"));
     }
 
     @Test
@@ -46,7 +49,7 @@ public class GemklubTest {
 
         loginPage.randomLogIn(config.getEmail());
 
-        Assert.assertTrue(loginPage.getBodyText().contains("Hibás felhasználónév és/vagy jelszó."));
+        assertTrue(loginPage.getBodyText().contains("Hibás felhasználónév és/vagy jelszó."));
     }
 
     @Test
@@ -56,7 +59,7 @@ public class GemklubTest {
 
         loginPage.randomLogIn();
 
-        Assert.assertTrue(loginPage.getBodyText().contains("Hibás felhasználónév és/vagy jelszó."));
+        assertTrue(loginPage.getBodyText().contains("Hibás felhasználónév és/vagy jelszó."));
     }
 
     @ParameterizedTest
@@ -69,10 +72,10 @@ public class GemklubTest {
         GamePage gamePage = new GamePage(driver, gameId, productName);
         gamePage.navigateTo();
 
-        Assert.assertEquals(gamePage.getProductName(), productName);
-        Assert.assertEquals(gamePage.getPlayerCount(), playerCount);
-        Assert.assertEquals(gamePage.getAgeCategory(), ageCategory);
-        Assert.assertEquals(gamePage.getGameTime(), gameTime);
+        assertEquals(gamePage.getProductName(), productName);
+        assertEquals(gamePage.getPlayerCount(), playerCount);
+        assertEquals(gamePage.getAgeCategory(), ageCategory);
+        assertEquals(gamePage.getGameTime(), gameTime);
     }
     
     @AfterEach

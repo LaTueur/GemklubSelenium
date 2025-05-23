@@ -1,3 +1,5 @@
+import java.util.*;
+
 class RandomGenerator {
     private static String alphabet = "abcdefghijklmnopqrstuvwxyz";
     private Random random = new Random();
