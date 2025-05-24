@@ -1,6 +1,6 @@
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.openqa.selenium.*;
@@ -126,11 +126,7 @@ public class GemklubTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "kontroll-13011, Kontroll, 2 fő, 20-25 perc, 14+",
-        "aranyfolyo-12974, Aranyfolyó, 2-4 fő, 60-90 perc, 14+",
-        "concept-85, Concept, 4-12 fő, 40 perc, 10+"
-    })
+    @CsvFileSource(resources = "games.csv", numLinesToSkip = 1)
     @DisplayName("User can view games and the correct info is displayed.")
     public void testGamePageData(String gameId, String productName, String playerCount, String gameTime, String ageCategory){
         GamePage gamePage = new GamePage(driver, gameId, productName);
