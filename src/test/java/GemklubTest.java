@@ -11,6 +11,7 @@ import com.mailslurp.clients.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.regex.*;
 
 public class GemklubTest {
     private WebDriver driver;
@@ -93,8 +94,35 @@ public class GemklubTest {
         
         succPage.waitOnPage();
         assertTrue(succPage.getBodyText().contains("Sikeres regisztráció"));
+        
+        mailManager.waitForLatestEmail();
+        assertEquals("Jó, hogy itt vagy!", mailManager.getLatestEmailSubject());
+    }
 
-        assertEquals("Jó, hogy itt vagy!", mailManager.lastestEmailSubject());
+    @Test
+    @DisplayName("User can use the forgot password feature and gets a new password and can login with that.")
+    public void testForgotPassword() throws ApiException {
+        ForgotPasswordPage forgotPage = new ForgotPasswordPage(driver);
+        forgotPage.navigateTo();
+
+        MailManager mailManager = new MailManager(config.getApiKey(), config.getInboxId());
+
+        LoginPage loginPage = forgotPage.fillCredentialAndRequestPassword(mailManager.getEmailAddress());
+
+        loginPage.waitOnPage();
+
+        mailManager.waitForLatestEmail();
+        assertEquals("Gémklub – A játék élmény! - Új jelszó", mailManager.getLatestEmailSubject());
+        
+        Pattern pattern = Pattern.compile("Az új jelszó:\\s*(\\w+)");
+        Matcher matcher = pattern.matcher(mailManager.getLatestEmailBody());
+
+        assertTrue(matcher.find());
+
+        String password = matcher.group(1);
+        ProfilePage profilePage = loginPage.fillCredentialAndLogIn(mailManager.getEmailAddress(), password);
+
+        profilePage.waitOnPage();
     }
 
     @ParameterizedTest
