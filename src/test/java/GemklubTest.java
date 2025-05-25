@@ -20,7 +20,8 @@ public class GemklubTest {
 
     @BeforeEach
     public void setup()  throws MalformedURLException  {
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        driver = new RemoteWebDriver(new URL("http://selenium:4444/wd/hub"), options);
         driver.manage().window().maximize();
         config = new Config();
 
